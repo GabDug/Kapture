@@ -134,15 +134,15 @@ void play_game(SDL_Surface *screen)
                         switch (event.type)
                         {
                         case SDL_QUIT:
-                            turn = NBR_TOUR_MAX + 2;
-                            pawn_ct = 100;// like a continue
+                            turn = player = pawn_ct = round = 10000;
+                            // like a continue
                             break;
                         case SDL_KEYDOWN:
                             switch (event.key.keysym.sym)
                             {
                             case SDLK_ESCAPE:
-                                turn = NBR_TOUR_MAX + 2;
-                                pawn_ct = 100;// like a continue
+                                turn = player = pawn_ct = round = 10000;
+                                // like a continue
                                 break;
                             case SDLK_UP:
                                 action_pos.y--;
@@ -179,7 +179,7 @@ void play_game(SDL_Surface *screen)
             }
         }
     }
-    pause();
+    //pause();
 
 
     // Memory Free

@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     SDL_Init(SDL_INIT_VIDEO);
     SDL_WM_SetCaption("Kaptur", NULL);
 
-    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT+40, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); // main window init
+    screen = SDL_SetVideoMode(REAL_SCREEN_WIDTH, REAL_SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); // main window init
 
     if (screen == NULL)
     {
@@ -41,9 +41,11 @@ int main(int argc, char *argv[])
             play_game(screen);
             break;
         case 2:
-            display_rules(screen);
             break;
         case 3:
+            display_rules(screen);
+            break;
+        case 4:
             keep = FALSE;
             break;
         default:
