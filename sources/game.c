@@ -105,7 +105,7 @@ void play_game(SDL_Surface *screen)
     SDL_Event event;
 
 
-    place_characters(map, players);
+    //place_characters(map, players);
     display_map(screen, map, char_map);
 
 

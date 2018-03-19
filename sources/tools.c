@@ -53,9 +53,7 @@ int **init_map(int size_x, int size_y)
     return map;
 }
 
-int **init_player_map(int size_x, int size_y)
-
-{
+int **init_player_map(int size_x, int size_y){
     fprintf(stderr, "Player map size: %d by %d\n", size_x, size_y);
     int i, j;
     int **map = (int **) malloc(size_y * sizeof(int *));
@@ -70,10 +68,11 @@ int **init_player_map(int size_x, int size_y)
             {
                 map[i][j] = CHARACTER0;
             }
-            /*else if (i == 6 && j==6)
+            else if (i == 6 && j==6)
             {
-                map[i][j] = CHARACTER1;
-            }*/
+                //map[i][j] = CHARACTER1;
+                map[i][j] = -1;
+            }
             else
             {
                 map[i][j] = -1;
