@@ -8,11 +8,6 @@
 *.gch
 *.pch
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
 
 # Shared objects (inc. Windows DLLs)
 *.so
@@ -29,8 +24,6 @@
 
 # Debug files
 *.dSYM/
-
-
 
 # IDEA
 *.idea/
