@@ -35,3 +35,5 @@ bin/Debug/stdout\.txt
 bin/Debug/stderr\.txt
 
 SDL_Template\.layout
+
+SDL_Template\.depend

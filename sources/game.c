@@ -93,8 +93,6 @@ void play_game(SDL_Surface *screen)
         fprintf(stderr, "Pawn: %d\n,", a);*/
     //pause();
 
-
-
     int **map = init_map(NBR_BLOCK_X, NBR_BLOCK_Y);
     int **char_map = init_player_map(NBR_BLOCK_X, NBR_BLOCK_Y);
 
@@ -104,10 +102,8 @@ void play_game(SDL_Surface *screen)
     SDL_Rect current_pos, action_pos;
     SDL_Event event;
 
-
     //place_characters(map, players);
     display_map(screen, map, char_map);
-
 
     for (turn = 0; turn < NBR_TOUR_MAX; turn++)
     {

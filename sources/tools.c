@@ -23,7 +23,6 @@ void pause()
 
 
 int **init_map(int size_x, int size_y)
-
 {
     fprintf(stderr, "Map size: %d by %d\n", size_x, size_y);
     int i, j;
@@ -111,9 +110,9 @@ int find_x(int **map, int id)
 {
     int i, j;
 
-    for (i = 0; i < NBR_BLOCK_X; i++)
+    for (i = 0; i < NBR_BLOCK_Y; i++)
     {
-        for (j = 0; j < NBR_BLOCK_Y; j++)
+        for (j = 0; j < NBR_BLOCK_X; j++)
         {
             fprintf(stderr, "Looking for x at: %d_%d\n,", i, j);
             if (map[i][j] == id)
@@ -132,9 +131,9 @@ int find_y(int **map, int id)
 {
     int i, j;
 
-    for (i = 0; i < NBR_BLOCK_X; i++)
+    for (i = 0; i < NBR_BLOCK_Y; i++)
     {
-        for (j = 0; j < NBR_BLOCK_Y; j++)
+        for (j = 0; j < NBR_BLOCK_X; j++)
         {
             if (map[i][j] == id)
             {
