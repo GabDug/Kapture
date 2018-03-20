@@ -7,16 +7,20 @@ void display_map(SDL_Surface *screen, int **map, int **char_map)
     SDL_Rect position;
     SDL_Surface *terrain = NULL, *forest = NULL, *river = NULL; // Background sprites
     SDL_Surface *flag_red = NULL, *flag_blue = NULL; // Transparent sprites
-    SDL_Surface *perso1 = NULL, *perso2 = NULL, *perso3 = NULL, *perso4 = NULL; // Characters sprites
+    SDL_Surface *p0_scout = NULL, *p0_scout_1 = NULL, *p0_infantry = NULL, *p0_troops = NULL, *p1_scout = NULL,*p1_scout_1 = NULL, *p1_infantry = NULL, *p1_troops = NULL; // Characters sprites
 
     terrain = SDL_LoadBMP("images/tile-terrain.bmp");
     forest = SDL_LoadBMP("images/tile-forest.bmp");
     river = SDL_LoadBMP("images/tile-river.bmp");
 
-    perso1 = SDL_LoadBMP("images/tile-pawn-scout.bmp");
-    perso2 = SDL_LoadBMP("images/tile-pawn-infantryman.bmp");
-    perso3 = SDL_LoadBMP("images/tile-pawn-shock-troop.bmp");
-    perso4 = SDL_LoadBMP("images/tile-pawn-scout-2.bmp");
+    p0_scout = SDL_LoadBMP("images/tile-pawn-scout.bmp");
+    p0_scout_1 = SDL_LoadBMP("images/tile-pawn-scout.bmp");
+    p0_infantry = SDL_LoadBMP("images/tile-pawn-infantryman.bmp");
+    p0_troops = SDL_LoadBMP("images/tile-pawn-shock-troop.bmp");
+    p1_scout = SDL_LoadBMP("images/tile-pawn-scout-2.bmp");
+    p1_scout_1 = SDL_LoadBMP("images/tile-pawn-scout-2.bmp");
+    p1_infantry = SDL_LoadBMP("images/tile-pawn-infantryman.bmp");
+    p1_troops = SDL_LoadBMP("images/tile-pawn-shock-troop.bmp");
 
     for (i = 0; i < NBR_BLOCK_Y; i++)
     {
@@ -39,17 +43,31 @@ void display_map(SDL_Surface *screen, int **map, int **char_map)
             }
             switch (char_map[i][j])
             {
-            case CHARACTER0:
-                SDL_BlitSurface(perso1, NULL, screen, &position);
+            case 0:
+                SDL_BlitSurface(p0_scout, NULL, screen, &position);
                 break;
-            case CHARACTER1:
-                SDL_BlitSurface(perso2, NULL, screen, &position);
+            case 1:
+                SDL_BlitSurface(p0_scout_1, NULL, screen, &position);
                 break;
-            case CHARACTER2:
-                SDL_BlitSurface(perso3, NULL, screen, &position);
+            case 2:
+                SDL_BlitSurface(p0_infantry, NULL, screen, &position);
                 break;
-            case CHARACTER3:
-                SDL_BlitSurface(perso4, NULL, screen, &position);
+            case 3:
+                SDL_BlitSurface(p0_troops, NULL, screen, &position);
+                break;
+            case 4:
+                SDL_BlitSurface(p1_scout_1, NULL, screen, &position);
+                break;
+            case 5:
+                SDL_BlitSurface(p1_scout, NULL, screen, &position);
+                break;
+            case 6:
+                SDL_BlitSurface(p1_infantry, NULL, screen, &position);
+                break;
+            case 7:
+                SDL_BlitSurface(p1_troops, NULL, screen, &position);
+                break;
+            default:
                 break;
             }
         }
@@ -60,14 +78,18 @@ void display_map(SDL_Surface *screen, int **map, int **char_map)
     SDL_FreeSurface(terrain);
     SDL_FreeSurface(forest);
     SDL_FreeSurface(river);
-    SDL_FreeSurface(perso1);
-    SDL_FreeSurface(perso2);
-    SDL_FreeSurface(perso3);
-    SDL_FreeSurface(perso4);
+    SDL_FreeSurface(p0_infantry);
+    SDL_FreeSurface(p1_infantry);
+    SDL_FreeSurface(p0_troops);
+    SDL_FreeSurface(p1_troops);
+    SDL_FreeSurface(p0_scout);
+    SDL_FreeSurface(p0_scout_1);
+    SDL_FreeSurface(p1_scout);
+    SDL_FreeSurface(p1_scout_1);
 }
 
 
-void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int turn)
+void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int turn, int mvmt_counter)
 {
     SDL_Rect position;
     position.x = 10;
@@ -85,7 +107,7 @@ void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int t
     SDL_Color bg_color = {27, 27, 27};
 
     char text[1024];
-    snprintf(text, 1024, "Turn %d - Player %d - Moving pawn %d (3 moves left)", turn, player, pawn_ct);
+    snprintf(text, 1024, "Turn %d - Player %d - Moving pawn %d (%d/XX moves)", turn, player, pawn_ct, mvmt_counter);
     texte = TTF_RenderText_Shaded(police, text, font_color, bg_color);
     SDL_BlitSurface(texte, NULL, screen, &position);
     SDL_Flip(screen);

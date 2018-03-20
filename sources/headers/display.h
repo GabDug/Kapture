@@ -10,3 +10,6 @@ int main_menu(SDL_Surface *screen);
 // Display the rules of the game, with events to quit
 int display_rules(SDL_Surface *screen);
 
+
+
+void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int turn, int mvmt_counter);

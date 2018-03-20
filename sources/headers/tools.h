@@ -8,7 +8,7 @@ void pause();
 int **init_map(int size_y, int size_x);
 
 // Generates a map with the id of each pawn
-int **init_player_map(int size_x, int size_y);
+int **init_player_map(int size_x, int size_y, Pawn ***pawns);
 
 // Find the first occurrence of an ID in a map (pawn or terrain)
 int find_x(int **map, int id);

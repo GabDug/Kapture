@@ -47,6 +47,8 @@ typedef struct PawnStruct
     int max_displacement;
     int displacement_left;
     int alive;
+    int start_pos_x;
+    int start_pos_y;
     //SDL_Rect position;
 } Pawn;
 

@@ -52,11 +52,13 @@ int **init_map(int size_x, int size_y)
     return map;
 }
 
-int **init_player_map(int size_x, int size_y)
+int **init_player_map(int size_x, int size_y, Pawn ***pawns)
 {
     fprintf(stderr, "Player map size: %d by %d\n", size_x, size_y);
-    int i, j;
+    int i, j, pawn_id;
+
     int **map = (int **) malloc(size_y * sizeof(int *));
+
 
     for (i = 0; i < size_y; i++)
     {
@@ -64,18 +66,23 @@ int **init_player_map(int size_x, int size_y)
 
         for (j = 0; j < size_x; j++)
         {
-            if (i == 4 && j == 4)
+            map[i][j] = -1;
+        }
+    }
+
+    for(pawn_id=0; pawn_id<8; pawn_id++)
+    {
+        for (i = 0; i < size_y; i++)
+        {
+            for (j = 0; j < size_x; j++)
             {
-                map[i][j] = CHARACTER0;
-            }
-            else if (i == 6 && j==6)
-            {
-                //map[i][j] = CHARACTER1;
-                map[i][j] = -1;
-            }
-            else
-            {
-                map[i][j] = -1;
+                if (i == (*pawns)[pawn_id]->start_pos_y && j == (*pawns)[pawn_id]->start_pos_x)
+                {
+                    map[i][j] = pawn_id;
+                    fprintf(stderr, "Pawn Id:%d   Pos:%d/%d\n", pawn_id, j, i);
+
+                }
+
             }
         }
     }
