@@ -36,14 +36,7 @@ enum
 #define REAL_SCREEN_WIDTH NBR_BLOCK_X * BLOCK_SIZE + WINDOW_OFFSET_X
 #define REAL_SCREEN_HEIGHT NBR_BLOCK_Y * BLOCK_SIZE + WINDOW_OFFSET_Y
 
-
-// Actions
-#define STAY 0
-#define UP 1
-#define DOWN 2
-#define LEFT 3
-#define RIGHT 4
-
+#define PAWNS 4
 
 typedef struct PawnStruct
 {
@@ -54,7 +47,7 @@ typedef struct PawnStruct
     int max_displacement;
     int displacement_left;
     int alive;
-    SDL_Rect position;
+    //SDL_Rect position;
 } Pawn;
 
 

@@ -72,27 +72,109 @@ void play_game(SDL_Surface *screen)
     //  We generate the pawns, the players and we put them in a Game struct
 
     // Pawns (I don't use the typedef bc of IDE which doesn't understand as well
-    /*Pawn pawn = {0, '0', 0, 0, 3, 3, 1, 1, 1};
-        Pawn pawn2 = {0, '0', 0, 0, 3, 3, 1, 1, 1};
-        Pawn pawns[10];
-        pawns[0] = pawn;
-        Pawn pawns2[10];
-        pawns2[0] = pawn2;
-        Pawn pawns_all = {pawns, pawns2};
-        void *pawns_all_ptr;
-        pawns_all_ptr = &pawns_all;
-        fprintf(stderr, "Pointer to pawns_all : %d\n", (int) pawns_all_ptr);
-        int a;
-        a = (int) pawns_all_ptr;
-        fprintf(stderr, "Pawn: %d\n,", a);
+    // Unique declaration of each pawn
+    /*Pawn pawn_scout_1_player_1 = {0, 'S', 1, FALSE, 5, 5, TRUE};
+    Pawn pawn_scout_2_player_1 = {1, 'S', 1, FALSE, 5, 5, TRUE};
+    Pawn pawn_infantry_1_player_1 = {2, 'I', 1, FALSE, 3, 3, TRUE};
+    Pawn pawn_shocktroop_1_player_1 = {3, 'T', 1, FALSE, 3, 3, TRUE};
+    Pawn pawn_scout_1_player_2 = {4, 'S', 2, FALSE, 3, 3, TRUE};
+    Pawn pawn_scout_2_player_2 = {5, 'S', 2, FALSE, 3, 3, TRUE};
+    Pawn pawn_infantry_1_player_2 = {6, 'I', 1, FALSE, 3, 3, TRUE};
+    Pawn pawn_shocktroop_1_player_2 = {7, 'T', 1, FALSE, 3, 3, TRUE};
+    */
+    // dynamic array for pawns
 
-        fprintf(stderr, "Pointer to pawns: %d\n", (int) &pawn);
-        a = (int) &pawn;
+    Pawn *ptr;
+    ptr = (Pawn*) malloc(8 * sizeof(Pawn));
+
+    int i;
+    // allocate 100 pointers, effectively an array
+    Pawn **t_array = malloc(8 * sizeof(Pawn *));
+
+    // allocate 100 structs and have the array point to them
+    for (int i = 0; i < 8; i++)
+    {
+        t_array[i] = malloc(sizeof(Pawn));
+    }
+
+    // Fill each pawn in this order for each player:
+    // 2 S, 1 I, 1 T
+    for (int i = 0; i < 8; i++)
+    {
+        t_array[i]->id = i;
+
+        if (i%PAWNS == 0 || i%PAWNS==1)
+        {
+            t_array[i]->type = 'S';
+        }
+        else
+        {
+            if (i%PAWNS == 2)
+            {
+                t_array[i]->type = 'I';
+            }
+            else
+            {
+                if (i%PAWNS == 3)
+                {
+                    t_array[i]->type = 'T';
+                }
+                else
+                {
+                    t_array[i]->type = 'X';
+
+                }
+            }
+        }
+        if (i <PAWNS)
+        {
+            t_array[i]->player_id=0;
+        }
+        else
+        {
+            t_array[i]->player_id=1;
+        }
+        t_array[i]->hasEnemyFlag=FALSE;
+        t_array[i]->max_displacement=5;
+        t_array[i]->displacement_left=5;
+        t_array[i]->alive=TRUE;
+    }
+
+    // now define a pointer to the array
+    Pawn ***p = &t_array;
+
+    for (int i = 0; i < 8; i++)
+    {
+        fprintf(stderr, "ID: %2d Type: %c Player Id: %d  Max Displacement: %d\n", (*p)[i]->id, (*p)[i]->type,(*p)[i]->player_id, (*p)[i]->max_displacement);
+    }
+
+    //ptr[0] = Pawn pawn_scout_1_player_1 = {0, 'S', 1, FALSE, 5, 5, TRUE};
+
+    /*fprintf(stderr, "Pointer to pawns ptr : %d\n", (int) ptr);
+    fprintf(stderr, "Pointer to pawn scout 1 p1 : %d\n", (int) &pawn_scout_1_player_1);
+    fprintf(stderr, "Pointer to pawn scout 1 p1 : %d\n", (int) &pawn_scout_2_player_1);
+    fprintf(stderr, "Pointer to pawn scout 1 p1 : %d\n", (int) &ptr[0]);
+    fprintf(stderr, "Pointer to pawn scout 1 p1 : %d\n", (int) &ptr[1]);*/
+
+    /*Pawn pawns[10];
+    pawns[0] = pawn;
+    Pawn pawns2[10];
+    pawns2[0] = pawn2;
+    Pawn pawns_all = {pawns, pawns2};
+    void *pawns_all_ptr;
+    pawns_all_ptr = &pawns_all;
+    fprintf(stderr, "Pointer to pawns_all : %d\n", (int) pawns_all_ptr);
+    int a;
+    a = (int) pawns_all_ptr;
+    fprintf(stderr, "Pawn: %d\n,", a);
+
+    fprintf(stderr, "Pointer to pawns: %d\n", (int) &pawn);
+    a = (int) &pawn;
 
 
-        fprintf(stderr, "Pawn: %d\n,", a);*/
+    fprintf(stderr, "Pawn: %d\n,", a);
     //pause();
-
+    */
     int **map = init_map(NBR_BLOCK_X, NBR_BLOCK_Y);
     int **char_map = init_player_map(NBR_BLOCK_X, NBR_BLOCK_Y);
 

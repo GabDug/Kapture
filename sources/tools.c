@@ -2,20 +2,20 @@
 
 void pause()
 {
-    int continuer = 1;
+    int keep = 1;
     SDL_Event event;
 
-    while (continuer)
+    while (keep)
     {
         SDL_WaitEvent(&event);
         switch (event.type)
         {
         case SDL_QUIT:
-            continuer = 0;
+            keep = 0;
             break;
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_ESCAPE)
-                continuer = 0;
+                keep = 0;
             break;
         }
     }
@@ -38,9 +38,9 @@ int **init_map(int size_x, int size_y)
             {
                 map[i][j] = FOREST;
             }
-            else if (i % 2 == 0 && j % 2 == 0)
+            else if (j == size_x / 2 || j == size_x / 2 -1)
             {
-                map[i][j] = FOREST;
+                map[i][j] = RIVER;
             }
             else
             {
@@ -52,7 +52,8 @@ int **init_map(int size_x, int size_y)
     return map;
 }
 
-int **init_player_map(int size_x, int size_y){
+int **init_player_map(int size_x, int size_y)
+{
     fprintf(stderr, "Player map size: %d by %d\n", size_x, size_y);
     int i, j;
     int **map = (int **) malloc(size_y * sizeof(int *));
@@ -114,10 +115,10 @@ int find_x(int **map, int id)
     {
         for (j = 0; j < NBR_BLOCK_X; j++)
         {
-            fprintf(stderr, "Looking for x at: %d_%d\n,", i, j);
+            // fprintf(stderr, "Looking for x at: %d_%d\n,", i, j);
             if (map[i][j] == id)
             {
-                fprintf(stderr, "Returning j: %d\n,", j);
+                // fprintf(stderr, "Returning j: %d\n,", j);
                 return j;
             }
         }
