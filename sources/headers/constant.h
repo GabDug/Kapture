@@ -36,7 +36,7 @@ enum
 #define REAL_SCREEN_WIDTH NBR_BLOCK_X * BLOCK_SIZE + WINDOW_OFFSET_X
 #define REAL_SCREEN_HEIGHT NBR_BLOCK_Y * BLOCK_SIZE + WINDOW_OFFSET_Y
 
-#define PAWNS 4
+#define PAWNS 5
 
 typedef struct PawnStruct
 {

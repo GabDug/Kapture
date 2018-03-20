@@ -11,5 +11,4 @@ int main_menu(SDL_Surface *screen);
 int display_rules(SDL_Surface *screen);
 
 
-
-void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int turn, int mvmt_counter);
+void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int turn, int mvmt_counter, int mvmt_counter_max);

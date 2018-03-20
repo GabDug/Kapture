@@ -70,7 +70,7 @@ int **init_player_map(int size_x, int size_y, Pawn ***pawns)
         }
     }
 
-    for(pawn_id=0; pawn_id<8; pawn_id++)
+    for(pawn_id=0; pawn_id<PAWNS*2; pawn_id++)
     {
         for (i = 0; i < size_y; i++)
         {
@@ -80,9 +80,7 @@ int **init_player_map(int size_x, int size_y, Pawn ***pawns)
                 {
                     map[i][j] = pawn_id;
                     fprintf(stderr, "Pawn Id:%d   Pos:%d/%d\n", pawn_id, j, i);
-
                 }
-
             }
         }
     }

@@ -1,13 +1,14 @@
 #include "headers/constant.h"
 #include "headers/tools.h"
 
-void display_map(SDL_Surface *screen, int **map, int **char_map)
+void display_map(SDL_Surface *screen, int **map, int **pawn_map)
 {
     int i, j;
     SDL_Rect position;
     SDL_Surface *terrain = NULL, *forest = NULL, *river = NULL; // Background sprites
     SDL_Surface *flag_red = NULL, *flag_blue = NULL; // Transparent sprites
     SDL_Surface *p0_scout = NULL, *p0_scout_1 = NULL, *p0_infantry = NULL, *p0_troops = NULL, *p1_scout = NULL,*p1_scout_1 = NULL, *p1_infantry = NULL, *p1_troops = NULL; // Characters sprites
+    SDL_Surface *p0_flag = NULL, *p1_flag = NULL;
 
     terrain = SDL_LoadBMP("images/tile-terrain.bmp");
     forest = SDL_LoadBMP("images/tile-forest.bmp");
@@ -17,10 +18,12 @@ void display_map(SDL_Surface *screen, int **map, int **char_map)
     p0_scout_1 = SDL_LoadBMP("images/tile-pawn-scout.bmp");
     p0_infantry = SDL_LoadBMP("images/tile-pawn-infantryman.bmp");
     p0_troops = SDL_LoadBMP("images/tile-pawn-shock-troop.bmp");
+    p0_flag = SDL_LoadBMP("images/flag-blue.bmp");
     p1_scout = SDL_LoadBMP("images/tile-pawn-scout-2.bmp");
     p1_scout_1 = SDL_LoadBMP("images/tile-pawn-scout-2.bmp");
     p1_infantry = SDL_LoadBMP("images/tile-pawn-infantryman.bmp");
     p1_troops = SDL_LoadBMP("images/tile-pawn-shock-troop.bmp");
+    p1_flag = SDL_LoadBMP("images/flag-red.bmp");
 
     for (i = 0; i < NBR_BLOCK_Y; i++)
     {
@@ -41,7 +44,7 @@ void display_map(SDL_Surface *screen, int **map, int **char_map)
                 SDL_BlitSurface(river, NULL, screen, &position);
                 break;
             }
-            switch (char_map[i][j])
+            switch (pawn_map[i][j])
             {
             case 0:
                 SDL_BlitSurface(p0_scout, NULL, screen, &position);
@@ -56,16 +59,22 @@ void display_map(SDL_Surface *screen, int **map, int **char_map)
                 SDL_BlitSurface(p0_troops, NULL, screen, &position);
                 break;
             case 4:
-                SDL_BlitSurface(p1_scout_1, NULL, screen, &position);
+                SDL_BlitSurface(p0_flag, NULL, screen, &position);
                 break;
             case 5:
-                SDL_BlitSurface(p1_scout, NULL, screen, &position);
+                SDL_BlitSurface(p1_scout_1, NULL, screen, &position);
                 break;
             case 6:
-                SDL_BlitSurface(p1_infantry, NULL, screen, &position);
+                SDL_BlitSurface(p1_scout, NULL, screen, &position);
                 break;
             case 7:
+                SDL_BlitSurface(p1_infantry, NULL, screen, &position);
+                break;
+            case 8:
                 SDL_BlitSurface(p1_troops, NULL, screen, &position);
+                break;
+            case 9:
+                SDL_BlitSurface(p1_flag, NULL, screen, &position);
                 break;
             default:
                 break;
@@ -78,6 +87,9 @@ void display_map(SDL_Surface *screen, int **map, int **char_map)
     SDL_FreeSurface(terrain);
     SDL_FreeSurface(forest);
     SDL_FreeSurface(river);
+
+    SDL_FreeSurface(p0_flag);
+    SDL_FreeSurface(p1_flag);
     SDL_FreeSurface(p0_infantry);
     SDL_FreeSurface(p1_infantry);
     SDL_FreeSurface(p0_troops);
@@ -89,7 +101,7 @@ void display_map(SDL_Surface *screen, int **map, int **char_map)
 }
 
 
-void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int turn, int mvmt_counter)
+void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int turn, int mvmt_counter, int mvmt_counter_max)
 {
     SDL_Rect position;
     position.x = 10;
@@ -107,7 +119,7 @@ void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int t
     SDL_Color bg_color = {27, 27, 27};
 
     char text[1024];
-    snprintf(text, 1024, "Turn %d - Player %d - Moving pawn %d (%d/XX moves)", turn, player, pawn_ct, mvmt_counter);
+    snprintf(text, 1024, "Turn %d - Player %d - Moving pawn %d (%d/%d moves)", turn, player, pawn_ct, mvmt_counter, mvmt_counter_max);
     texte = TTF_RenderText_Shaded(police, text, font_color, bg_color);
     SDL_BlitSurface(texte, NULL, screen, &position);
     SDL_Flip(screen);
