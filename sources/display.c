@@ -18,12 +18,17 @@ void display_map(SDL_Surface *screen, int **map, int **pawn_map)
     p0_scout_1 = SDL_LoadBMP("images/tile-pawn-scout.bmp");
     p0_infantry = SDL_LoadBMP("images/tile-pawn-infantryman.bmp");
     p0_troops = SDL_LoadBMP("images/tile-pawn-shock-troop.bmp");
-    p0_flag = SDL_LoadBMP("images/flag-blue.bmp");
+
     p1_scout = SDL_LoadBMP("images/tile-pawn-scout-2.bmp");
     p1_scout_1 = SDL_LoadBMP("images/tile-pawn-scout-2.bmp");
     p1_infantry = SDL_LoadBMP("images/tile-pawn-infantryman.bmp");
     p1_troops = SDL_LoadBMP("images/tile-pawn-shock-troop.bmp");
+
+    p0_flag = SDL_LoadBMP("images/flag-blue.bmp");
+    SDL_SetColorKey(p0_flag, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
     p1_flag = SDL_LoadBMP("images/flag-red.bmp");
+    SDL_SetColorKey(p1_flag, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+
 
     for (i = 0; i < NBR_BLOCK_Y; i++)
     {

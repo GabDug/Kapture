@@ -37,13 +37,14 @@ enum
 #define REAL_SCREEN_HEIGHT NBR_BLOCK_Y * BLOCK_SIZE + WINDOW_OFFSET_Y
 
 #define PAWNS 5
+#define FLAG_TAKEN 50
 
 typedef struct PawnStruct
 {
     int id;
     char type;
     int player_id;
-    int hasEnemyFlag;
+    int flag;
     int max_displacement;
     int displacement_left;
     int alive;
@@ -52,22 +53,4 @@ typedef struct PawnStruct
     //SDL_Rect position;
 } Pawn;
 
-
-typedef struct PlayerStruct
-{
-    int id;
-    int alive;
-    int *pawns_ptr;
-} Player;
-
-
-
-typedef struct GameStruct
-{
-    Player players[2];
-    int turn;
-    int playerTurn; // Which player is playing
-
-
-} Game;
 

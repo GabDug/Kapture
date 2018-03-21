@@ -88,28 +88,6 @@ int **init_player_map(int size_x, int size_y, Pawn ***pawns)
     return map;
 }
 
-Player *init_players(int nbr_player)
-{
-    fprintf(stderr, "Initplayers nbr player : %d\n", nbr_player);
-//s    fprintf(stderr, "Initplayers nbr pawnse : %d\n", pawnse);
-    int i;
-    Player *players = (Player *) malloc(nbr_player * sizeof(Player));
-//    fprintf(stderr, "%d\n", pawns);
-    //  fprintf(stderr, "%d\n", pawns);
-
-    for (i = 0; i < nbr_player; i++)
-    {
-        players[i].id = i + 20;
-        players[i].alive = TRUE;
-//        if (i==0)
-//            players[i].pawns_ptr = &pawns[0];
-//        if (i==1)
-//            players[i].pawns_ptr = &pawns[1];
-    }
-
-    return players;
-}
-
 
 
 int find_x(int **map, int id)
