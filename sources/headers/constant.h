@@ -15,7 +15,7 @@
 // Map items
 enum
 {
-    TERRAIN, FOREST, RIVER, CHARACTER0, CHARACTER1, CHARACTER2, CHARACTER3
+    TERRAIN, FOREST, RIVER, FLAG_BASE_P0, FLAG_BASE_P1, CHARACTER0, CHARACTER1, CHARACTER2, CHARACTER3
 };
 
 // Settings
@@ -38,6 +38,8 @@ enum
 
 #define PAWNS 5
 #define FLAG_TAKEN 50
+#define ALL 60
+#define TWO 7
 
 typedef struct PawnStruct
 {

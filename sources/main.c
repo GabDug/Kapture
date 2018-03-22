@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     SDL_Surface *screen = NULL;
 
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_WM_SetCaption("Kaptur", NULL);
+    SDL_WM_SetCaption("Kapture", NULL);
 
     screen = SDL_SetVideoMode(REAL_SCREEN_WIDTH, REAL_SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); // main window init
 
@@ -31,21 +31,22 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Can't load text (TTF_Init): %s\n", TTF_GetError());
         exit(EXIT_FAILURE);
     }
-    fprintf(stderr, "KAPTUR\n");
+    fprintf(stderr, "KAPTURE\n");
 
     do
     {
-        switch (main_menu(screen))
+        switch (display_menu(screen))
         {
-        case 1:
+        case 1: // New Game
             play_game(screen);
             break;
         case 2:
+            // TODO Load Game
             break;
-        case 3:
+        case 3: // Rules
             display_rules(screen);
             break;
-        case 4:
+        case 4: // Quit
             keep = FALSE;
             break;
         default:
@@ -55,8 +56,7 @@ int main(int argc, char *argv[])
     }
     while (keep);
 
-    //TTF_CloseFont(police); /* Has to be before TTF_Quit() */
-    //TTF_Quit();
+    TTF_Quit();
     SDL_Quit();
     return 0;
 }

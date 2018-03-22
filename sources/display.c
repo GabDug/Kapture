@@ -5,7 +5,7 @@ void display_map(SDL_Surface *screen, int **map, int **pawn_map)
 {
     int i, j;
     SDL_Rect position;
-    SDL_Surface *terrain = NULL, *forest = NULL, *river = NULL; // Background sprites
+    SDL_Surface *terrain = NULL, *forest = NULL, *river = NULL, *base = NULL; // Background sprites
     SDL_Surface *flag_red = NULL, *flag_blue = NULL; // Transparent sprites
     SDL_Surface *p0_scout = NULL, *p0_scout_1 = NULL, *p0_infantry = NULL, *p0_troops = NULL, *p1_scout = NULL,*p1_scout_1 = NULL, *p1_infantry = NULL, *p1_troops = NULL; // Characters sprites
     SDL_Surface *p0_flag = NULL, *p1_flag = NULL;
@@ -13,6 +13,7 @@ void display_map(SDL_Surface *screen, int **map, int **pawn_map)
     terrain = SDL_LoadBMP("images/tile-terrain.bmp");
     forest = SDL_LoadBMP("images/tile-forest.bmp");
     river = SDL_LoadBMP("images/tile-river.bmp");
+    base = SDL_LoadBMP("images/tile-base.bmp");
 
     p0_scout = SDL_LoadBMP("images/tile-pawn-scout.bmp");
     p0_scout_1 = SDL_LoadBMP("images/tile-pawn-scout.bmp");
@@ -25,9 +26,23 @@ void display_map(SDL_Surface *screen, int **map, int **pawn_map)
     p1_troops = SDL_LoadBMP("images/tile-pawn-shock-troop.bmp");
 
     p0_flag = SDL_LoadBMP("images/flag-blue.bmp");
-    SDL_SetColorKey(p0_flag, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
     p1_flag = SDL_LoadBMP("images/flag-red.bmp");
+
+    SDL_SetColorKey(base, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+
+    SDL_SetColorKey(p0_flag, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+    SDL_SetColorKey(p0_scout, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+    SDL_SetColorKey(p0_scout_1, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+    SDL_SetColorKey(p0_infantry, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+    SDL_SetColorKey(p0_troops, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+
     SDL_SetColorKey(p1_flag, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+    SDL_SetColorKey(p1_scout, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+    SDL_SetColorKey(p1_scout_1, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+    SDL_SetColorKey(p1_infantry, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+    SDL_SetColorKey(p1_troops, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
+
+
 
 
     for (i = 0; i < NBR_BLOCK_Y; i++)
@@ -47,6 +62,12 @@ void display_map(SDL_Surface *screen, int **map, int **pawn_map)
                 break;
             case RIVER:
                 SDL_BlitSurface(river, NULL, screen, &position);
+                break;
+            case FLAG_BASE_P0:
+                SDL_BlitSurface(base, NULL, screen, &position);
+                break;
+            case FLAG_BASE_P1:
+                SDL_BlitSurface(base, NULL, screen, &position);
                 break;
             }
             switch (pawn_map[i][j])
@@ -92,6 +113,7 @@ void display_map(SDL_Surface *screen, int **map, int **pawn_map)
     SDL_FreeSurface(terrain);
     SDL_FreeSurface(forest);
     SDL_FreeSurface(river);
+    SDL_FreeSurface(base);
 
     SDL_FreeSurface(p0_flag);
     SDL_FreeSurface(p1_flag);
@@ -106,7 +128,7 @@ void display_map(SDL_Surface *screen, int **map, int **pawn_map)
 }
 
 
-void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int turn, int mvmt_counter, int mvmt_counter_max)
+void display_info(SDL_Surface *screen, int pawn_ct, int player, int turn, int mvmt_counter, int mvmt_counter_max, Pawn *pawns)
 {
     SDL_Rect position;
     position.x = 10;
@@ -118,19 +140,23 @@ void display_info(SDL_Surface *screen, int pawn_ct, int player, int round, int t
     SDL_FillRect(background, NULL, SDL_MapRGB(screen->format, 27, 27, 27));
     SDL_BlitSurface(background, NULL, screen, &position); // Collage de la surface sur l'écran
 
-    TTF_Font *police = NULL;
-    police = TTF_OpenFont("data/abel.ttf", 22);
+    TTF_Font *font = NULL;
+    font = TTF_OpenFont("data/abel.ttf", 22);
     SDL_Color font_color = {250, 250, 255};
     SDL_Color bg_color = {27, 27, 27};
 
     char text[1024];
-    snprintf(text, 1024, "Turn %d - Player %d - Moving pawn %d (%d/%d moves)", turn, player, pawn_ct, mvmt_counter, mvmt_counter_max);
-    texte = TTF_RenderText_Shaded(police, text, font_color, bg_color);
+    snprintf(text, 1024, "Turn %d - Player %d - Moving pawn %d (%d/%d moves)", turn, player, pawn_ct%PAWNS, mvmt_counter, mvmt_counter_max);
+    texte = TTF_RenderText_Shaded(font, text, font_color, bg_color);
     SDL_BlitSurface(texte, NULL, screen, &position);
     SDL_Flip(screen);
+
+
+    TTF_CloseFont(font); /* Has to be before TTF_Quit() */
+
 }
 
-int main_menu(SDL_Surface *screen)
+int display_menu(SDL_Surface *screen)
 {
     int choice;
     SDL_Surface *menu = NULL;

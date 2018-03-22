@@ -1,8 +1,8 @@
 //
-// Created by gabri on 18/03/2018.
+// Created by gabri on 17/03/2018.
 //
 
-#ifndef KAPTUR_FILES_H
-#define KAPTUR_FILES_H
+#ifndef KAPTURE_FILES_H
+#define KAPTURE_FILES_H
 
-#endif //KAPTUR_FILES_H
+#endif //KAPTURE_FILES_H
