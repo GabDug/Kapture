@@ -43,8 +43,6 @@ void display_map(SDL_Surface *screen, int **map, int **pawn_map)
     SDL_SetColorKey(p1_troops, SDL_SRCCOLORKEY, SDL_MapRGB(p0_flag->format, 255, 0, 255));
 
 
-
-
     for (i = 0; i < NBR_BLOCK_Y; i++)
     {
         for (j = 0; j < NBR_BLOCK_X; j++)
@@ -146,14 +144,12 @@ void display_info(SDL_Surface *screen, int pawn_ct, int player, int turn, int mv
     SDL_Color bg_color = {27, 27, 27};
 
     char text[1024];
-    snprintf(text, 1024, "Turn %d - Player %d - Moving pawn %d (%d/%d moves)", turn, player, pawn_ct%PAWNS, mvmt_counter, mvmt_counter_max);
+    snprintf(text, 1024, "Turn %d - Player %d - Moving pawn %d (%d/%d moves)", turn +1, player+1, (pawn_ct%PAWNS)+1, mvmt_counter, mvmt_counter_max);
     texte = TTF_RenderText_Shaded(font, text, font_color, bg_color);
     SDL_BlitSurface(texte, NULL, screen, &position);
     SDL_Flip(screen);
 
-
     TTF_CloseFont(font); /* Has to be before TTF_Quit() */
-
 }
 
 int display_menu(SDL_Surface *screen)

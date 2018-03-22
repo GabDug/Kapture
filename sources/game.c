@@ -3,6 +3,7 @@
 // array structure etc tu connais
 
 
+// Move the pawn in the map
 void move(int **pawn_map, Pawn ***p, int pawn_id, SDL_Rect old_pos, SDL_Rect new_pos)
 {
     pawn_map[new_pos.y][new_pos.x] = pawn_map[old_pos.y][old_pos.x];
@@ -10,11 +11,12 @@ void move(int **pawn_map, Pawn ***p, int pawn_id, SDL_Rect old_pos, SDL_Rect new
 }
 
 
-
-int check_win_conditions(int **map, int **pawn_map, Pawn ***pawns){
+int check_win_conditions(int **map, int **pawn_map, Pawn ***pawns)
+{
 
 
 }
+
 
 // Remove the flag from the board, put it "in" a pawn
 void take_flag(int **pawn_map, SDL_Rect old_pos, SDL_Rect new_pos, Pawn ***p, int pawn_id)
@@ -31,6 +33,8 @@ void take_flag(int **pawn_map, SDL_Rect old_pos, SDL_Rect new_pos, Pawn ***p, in
     pawn_map[old_pos.y][old_pos.x] = -1;
 }
 
+
+// Check if a movement action can be made by a pawn
 int check_action(int **map, int **pawn_map, SDL_Rect position, SDL_Rect old_pos, Pawn ***p, int pawn_id)
 {
     if (position.x >= NBR_BLOCK_X || position.x < 0 || position.y >= NBR_BLOCK_Y || position.y < 0)
@@ -70,14 +74,14 @@ void play_game(SDL_Surface *screen)
 
     // dynamic array for pawns
     Pawn *ptr;
-    ptr = (Pawn*) malloc(PAWNS*2 * sizeof(Pawn));
+    ptr = (Pawn*) malloc(PAWNS*NBR_PLAYERS * sizeof(Pawn));
 
     int i = 0;
     // allocate pointers (array)
-    Pawn **t_array = malloc(PAWNS*2 * sizeof(Pawn *));
+    Pawn **t_array = malloc(PAWNS*NBR_PLAYERS * sizeof(Pawn *));
 
     // allocate pawns and have the array point to them
-    for (i = 0; i < PAWNS*2; i++)
+    for (i = 0; i < PAWNS*NBR_PLAYERS; i++)
     {
         t_array[i] = malloc(sizeof(Pawn));
     }
@@ -85,11 +89,11 @@ void play_game(SDL_Surface *screen)
     // Fill each pawn in this order for each player:
     // 2 S, 1 I, 1 T
     fprintf(stderr, "58\n");
-    for (i = 0; i < PAWNS*2; i++)
+    for (i = 0; i < PAWNS*NBR_PLAYERS; i++)
     {
         t_array[i]->id = i;
 
-        if (i%PAWNS == 0 || i%PAWNS==1)
+        if (i%PAWNS == 0 || i%PAWNS==1) // If scout (ID 0, 1 or 5, 6)
         {
             t_array[i]->type = 'S';
             t_array[i]->max_displacement=5;
@@ -97,7 +101,7 @@ void play_game(SDL_Surface *screen)
         }
         else
         {
-            if (i%PAWNS == 2)
+            if (i%PAWNS == 2) // If Infantryman (ID 2 or 7)
             {
                 t_array[i]->type = 'I';
                 t_array[i]->max_displacement=3;
@@ -105,7 +109,7 @@ void play_game(SDL_Surface *screen)
             }
             else
             {
-                if (i%PAWNS == 3)
+                if (i%PAWNS == 3) // If troop
                 {
                     t_array[i]->type = 'T';
                     t_array[i]->max_displacement=2;
@@ -113,7 +117,7 @@ void play_game(SDL_Surface *screen)
                 }
                 else
                 {
-                    if (i%PAWNS == 4)
+                    if (i % PAWNS == 4) // If Flag
                     {
                         t_array[i]->type = 'F';
                         t_array[i]->max_displacement=0;
@@ -124,7 +128,7 @@ void play_game(SDL_Surface *screen)
                 }
             }
         }
-        if (i < PAWNS) // IF 0<i<5 then player 1 if 5<=i<10 then player 2
+        if (i < PAWNS) // If 0<i<5 then player 1 if 5<=i<10 then player 2
         {
             t_array[i]->player_id=0;
             if (i==4)
@@ -157,7 +161,7 @@ void play_game(SDL_Surface *screen)
         t_array[i]->alive=TRUE;
     }
 
-    // now define a pointer to the array
+    // Now define a pointer to the array
     //Pawn ***pe = init_pawns();
     Pawn ***p = &t_array;
 
@@ -172,7 +176,6 @@ void play_game(SDL_Surface *screen)
     int **map = init_map(NBR_BLOCK_X, NBR_BLOCK_Y);
     int **pawn_map = init_pawn_map(NBR_BLOCK_X, NBR_BLOCK_Y, p);
     fprintf(stderr, "Maps created!\n");
-    //Player *players = init_players(2); // list with all the players
 
     SDL_Rect current_pos, action_pos;
     SDL_Event event;
@@ -183,12 +186,14 @@ void play_game(SDL_Surface *screen)
     for (turn = 0; turn < NBR_TOUR_MAX; turn++)
     {
         fprintf(stderr, " FIRST LOOP!\n");
-        // the pawncounter goes twice as high bc of double buffering incrementing twice
+
+        // The pawncounter goes twice as high bc of double buffering incrementing twice
         for (counter = 0; counter < NBR_PLAYERS * PAWNS * 2; counter++)
         {
             fprintf(stderr, "  SECOND LOOP!\n");
-            pawn_ct = counter / 2; // THe id of the pawn to operate
-            if (counter % 2 == 1 && pawn_ct%PAWNS != 4)
+
+            pawn_ct = counter / 2; // The id of the pawn to operate
+            if (counter % 2 == 1 && pawn_ct % PAWNS != 4)
             {
                 if(pawn_ct < PAWNS)
                     player = 0;
@@ -197,26 +202,18 @@ void play_game(SDL_Surface *screen)
 
                 fprintf(stderr, "  Pawn: %d, player: %d,  turn:%d, move_left: %d, flag:%d\n", pawn_ct, player, turn,(*p)[pawn_ct]->displacement_left, (*p)[pawn_ct]->flag);
 
-
                 int mvmt_counter, mvmt_max;
                 mvmt_counter = 0;
                 mvmt_max = (*p)[pawn_ct]->max_displacement ;
-
-
-                // TODO Remove
-                int mvmt_counter_up=TRUE;
-
 
                 fprintf(stderr, "  Before while: pawn: %d, player: %d,  turn:%d, counter:%d, mvmcounter%d, double:%d\n", pawn_ct, player,  turn, counter, mvmt_counter, mvmt_counter);
 
                 while (mvmt_counter < mvmt_max)
                 {
-                    fprintf(stderr, "  %d\n", mvmt_counter);
-
                     //fprintf(stderr, "Enter while: pawn: %d, player: %d, round: %d, turn:%d, counter:%d, mvmcounter%d, double:%d\n", pawn_ct, player, round, turn, counter, mvmt_counter, mvmt_counter_double);
                     current_pos.x = find_x(pawn_map, (*p)[pawn_ct]->id);
                     current_pos.y = find_y(pawn_map, (*p)[pawn_ct]->id);
-                    /*}*/
+
 
                     if (current_pos.x == -1 || current_pos.y == -1)
                     {
@@ -228,24 +225,29 @@ void play_game(SDL_Surface *screen)
                     {
                         action_pos.x = current_pos.x;
                         action_pos.y = current_pos.y;
+                        int movement = FALSE;
+                        // movement is when a movement key has been pressed
 
-                        //SDL_EnableKeyRepeat(100, 100);
-                        // TODO IMPORTNT We used a single 1D Array to store all the pawns to avoid using
+
+                        // Not used because of limited movements
+                        // SDL_EnableKeyRepeat(100, 100);
+
+                        // TODO We used a single 1D Array to store all the pawns to avoid using
                         // 2D Arrays and multiples structures that would be unnecessary and  we didn't have
                         // to implement a Player structure.
+
                         SDL_WaitEvent(&event);
                         switch (event.type)
                         {
                         case SDL_QUIT:
-                            turn = player = pawn_ct = counter=mvmt_counter = mvmt_counter = 10000;
+                            turn = pawn_ct = counter= mvmt_counter = 10000;
                             // like a continue
                             break;
                         case SDL_KEYDOWN:
                             switch (event.key.keysym.sym)
                             {
-                                int check;
                             case SDLK_ESCAPE:
-                                turn = player = pawn_ct  =counter = mvmt_counter = mvmt_counter = 10000;
+                                turn =  pawn_ct  =counter = mvmt_counter = 10000;
                                 // like a continue
                                 break;
                             case SDLK_RETURN: // END TURN
@@ -255,110 +257,44 @@ void play_game(SDL_Surface *screen)
                             case SDLK_q: //UPPER LEFT
                                 action_pos.x--;
                                 action_pos.y--;
-                                //int **map, int **pawn_map, SDL_Rect position, SDL_Rect old_posPawn, Pawn ***p, int pawn_id);
-                                check = check_action(map, pawn_map, action_pos, current_pos ,p, pawn_ct);
-                                if (check)
-                                {
-                                    if (check==FLAG_TAKEN)
-                                    {
-                                        take_flag(pawn_map, current_pos, action_pos, p, pawn_ct);
-                                    }
-                                    else
-                                        move(pawn_map, p, pawn_ct,current_pos, action_pos);
-                                    mvmt_counter++;
-                                }
+                                movement = TRUE;
                                 break;
                             case SDLK_e: //UPPER RIGHT
                                 action_pos.x++;
                                 action_pos.y--;
-                                check = check_action(map, pawn_map, action_pos, current_pos ,p, pawn_ct);
-                                if (check)
-                                {
-                                    if (check==FLAG_TAKEN)
-                                    {
-                                        take_flag(pawn_map, current_pos, action_pos, p, pawn_ct);
-                                    }
-                                    else
-                                        move(pawn_map, p, pawn_ct, current_pos, action_pos);
-                                    mvmt_counter++;
-                                }
+                                movement = TRUE;
                                 break;
                             case SDLK_z: // LOWER LEFT
                                 action_pos.x--;
                                 action_pos.y++;
-                                check = check_action(map, pawn_map, action_pos, current_pos ,p, pawn_ct);
-                                if (check)
-                                {
-                                    if (check==FLAG_TAKEN)
-                                    {
-                                        take_flag(pawn_map, current_pos, action_pos, p, pawn_ct);
-                                    }
-                                    else
-                                        move(pawn_map, p, pawn_ct, current_pos, action_pos);
-                                    mvmt_counter++;
-                                }
+                                movement = TRUE;
                                 break;
                             case SDLK_c: // LOWER RIGHT
                                 action_pos.x++;
                                 action_pos.y++;
-                                check = check_action(map, pawn_map, action_pos, current_pos ,p, pawn_ct);
-                                if (check)
-                                {
-                                    if (check==FLAG_TAKEN)
-                                    {
-                                        take_flag(pawn_map, current_pos, action_pos, p, pawn_ct);
-                                    }
-                                    else
-                                        move(pawn_map, p, pawn_ct, current_pos, action_pos);
-                                    mvmt_counter++;
-                                }
+                                movement = TRUE;
                                 break;
                             case SDLK_w: // UP
                                 action_pos.y--;
-                                check = check_action(map, pawn_map, action_pos, current_pos ,p, pawn_ct);
-                                if (check)
-                                {
-                                    if (check==FLAG_TAKEN)
-                                    {
-                                        take_flag(pawn_map, current_pos, action_pos, p, pawn_ct);
-                                    }
-                                    else
-                                        move(pawn_map, p, pawn_ct, current_pos, action_pos);
-                                    mvmt_counter++;
-                                }
+                                movement = TRUE;
                                 break;
                             case SDLK_s: // DOWN
                                 action_pos.y++;
-                                check = check_action(map, pawn_map, action_pos, current_pos ,p, pawn_ct);
-                                //check = check_action(map, pawn_map, action_pos, p, pawn_ct);
-                                if (check)
-                                {
-                                    if (check==FLAG_TAKEN)
-                                    {
-                                        take_flag(pawn_map, current_pos, action_pos, p, pawn_ct);
-                                    }
-                                    else
-                                        move(pawn_map, p, pawn_ct,current_pos, action_pos);
-                                    mvmt_counter++;
-                                }
+                                movement = TRUE;
                                 break;
                             case SDLK_a: // LEFT
                                 action_pos.x--;
-                                check = check_action(map, pawn_map, action_pos,current_pos , p, pawn_ct);
-                                if (check)
-                                {
-                                    if (check==FLAG_TAKEN)
-                                    {
-                                        take_flag(pawn_map, current_pos, action_pos, p, pawn_ct);
-                                    }
-                                    else
-                                        move(pawn_map, p, pawn_ct,current_pos, action_pos);
-                                    mvmt_counter++;
-                                }
+                                movement = TRUE;
                                 break;
                             case SDLK_d: // RIGHT
                                 action_pos.x++;
-                                check = check_action(map, pawn_map, action_pos,current_pos , p, pawn_ct);
+                                movement = TRUE;
+                                break;
+                            }
+                            if (movement)
+                            {
+                                int check;
+                                check = check_action(map, pawn_map, action_pos,current_pos, p, pawn_ct);
                                 if (check)
                                 {
                                     if (check==FLAG_TAKEN)
@@ -369,17 +305,11 @@ void play_game(SDL_Surface *screen)
                                         move(pawn_map, p, pawn_ct,current_pos, action_pos);
                                     mvmt_counter++;
                                 }
-                                break;
                             }
 
                         }
-                        // CHECK WINcurrent_pos ,
-                        //  if(mvmt_counter_up)
-                        //    mvmt_counter_double++;
-
                         display_map(screen, map, pawn_map);
                         display_info(screen, pawn_ct, player, turn, mvmt_counter, (*p)[pawn_ct]->max_displacement);
-                        //    pause();
 
                     }
                     fprintf(stderr, "   Pawn: %d, player: %d, turn:%d, move_left: %d, flag:%d\n", pawn_ct, player, turn,(*p)[pawn_ct]->displacement_left, (*p)[pawn_ct]->flag);
@@ -390,18 +320,10 @@ void play_game(SDL_Surface *screen)
 
     }
 
-    //pause();
-
-
     // Memory Free
     // TODO Unload from memory pawns etc...
     for (i = 0; i < NBR_BLOCK_Y; i++) // i is each column
         free(map[i]);
     free(map);
-
-
-//    free(players);
-
-
 }
 
