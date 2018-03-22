@@ -41,6 +41,11 @@ enum
 #define ALL 60
 #define TWO 7
 
+#define FLAG_P0_X 2
+#define FLAG_P0_Y 7
+#define FLAG_P1_X NBR_BLOCK_X - 3
+#define FLAG_P1_Y 7
+
 typedef struct PawnStruct
 {
     int id;

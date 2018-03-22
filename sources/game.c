@@ -9,6 +9,13 @@ void move(int **pawn_map, Pawn ***p, int pawn_id, SDL_Rect old_pos, SDL_Rect new
     pawn_map[old_pos.y][old_pos.x] = -1;
 }
 
+
+
+int check_win_conditions(int **map, int **pawn_map, Pawn ***pawns){
+
+
+}
+
 // Remove the flag from the board, put it "in" a pawn
 void take_flag(int **pawn_map, SDL_Rect old_pos, SDL_Rect new_pos, Pawn ***p, int pawn_id)
 {
@@ -122,8 +129,8 @@ void play_game(SDL_Surface *screen)
             t_array[i]->player_id=0;
             if (i==4)
             {
-                t_array[i]->start_pos_x=2;
-                t_array[i]->start_pos_y=7;
+                t_array[i]->start_pos_x=FLAG_P0_X ;
+                t_array[i]->start_pos_y=FLAG_P0_Y ;
             }
             else
             {
@@ -137,8 +144,8 @@ void play_game(SDL_Surface *screen)
 
             if (i % PAWNS==4)
             {
-                t_array[i]->start_pos_x=NBR_BLOCK_X - 3;
-                t_array[i]->start_pos_y=7;
+                t_array[i]->start_pos_x=FLAG_P1_X ;
+                t_array[i]->start_pos_y=FLAG_P1_Y ;
             }
             else
             {
@@ -181,7 +188,7 @@ void play_game(SDL_Surface *screen)
         {
             fprintf(stderr, "  SECOND LOOP!\n");
             pawn_ct = counter / 2; // THe id of the pawn to operate
-            if (counter % 2 == 1 && pawn_ct%5!=4)
+            if (counter % 2 == 1 && pawn_ct%PAWNS != 4)
             {
                 if(pawn_ct < PAWNS)
                     player = 0;

@@ -34,20 +34,21 @@ int **init_map(int size_x, int size_y)
 
         for (j = 0; j < size_x; j++)
         {
-            if ((j == size_x / 2 && i >= NBR_BLOCK_Y/2) || (i <= NBR_BLOCK_Y/2 && j == size_x / 2 -1))
+            if ((j == size_x / 2 && i >= NBR_BLOCK_Y / 2) || (i <= NBR_BLOCK_Y / 2 && j == size_x / 2 -1))
             {
                 map[i][j] = RIVER;
             }
             else if ((i == 0 || j == 0 || i == size_y - 1 || j == size_x - 1) || (i ==5 &&j==8)||(i ==5 &&j==7)||(i ==6 &&j==8)
                      || (i ==8 &&j==18)||(i ==8 &&j==17)||(i ==9 &&j==18))
             {
+                // Just put some forest in the map and on the edges
                 map[i][j] = FOREST;
             }
-            else if (j == 2 && i == 7)
+            else if (j == FLAG_P0_X  && i == FLAG_P0_Y)
             {
                 map[i][j] = FLAG_BASE_P0;
             }
-            else if (j == NBR_BLOCK_X - 3 && i == 7)
+            else if (j == FLAG_P1_X  && i == FLAG_P1_Y )
             {
                 map[i][j] = FLAG_BASE_P1;
             }
@@ -57,7 +58,6 @@ int **init_map(int size_x, int size_y)
             }
         }
     }
-
     return map;
 }
 
